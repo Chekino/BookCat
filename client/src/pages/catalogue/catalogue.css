@@ -1,0 +1,10 @@
+.header-image {
+   /* S'assure que l'image ne dépasse pas la largeur du conteneur */
+    background-position: 2%;
+    background-image: url("../../assets/bookstore.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 350px;
+    width: 100%;
+   
+  }
