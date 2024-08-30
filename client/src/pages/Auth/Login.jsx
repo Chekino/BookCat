@@ -1,12 +1,20 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(email, password);
+  };
   return (
     <div className="hero min-h-screen">
       <div className="hero-content flex-col">
         <p>Veuillez vous connecter !</p>
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-          <form className="card-body">
+          <form className="card-body" onSubmit={handleSubmit}>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -15,6 +23,8 @@ const Login = () => {
                 type="email"
                 placeholder="email"
                 className="input input-bordered"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -25,6 +35,8 @@ const Login = () => {
               <input
                 type="password"
                 placeholder="mot de passe"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="input input-bordered"
                 required
               />

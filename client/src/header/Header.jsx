@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 const navigation = [
   { name: "ACCUEIL", href: "/", current: true },
   { name: "CATALOGUE", href: "/catalogue", current: false },
+  { name: "ADMIN DASHBOARD", href: "/dashboard", current: false },
 ];
 
 function classNames(...classes) {

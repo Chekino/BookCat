@@ -1,0 +1,17 @@
+.admin-panel {
+    display: flex;
+    min-height: 100vh; /* Assure que la mise en page couvre toute la hauteur de l'écran */
+  }
+  
+  .sidebar {
+    width: 300px; /* Largeur fixe pour la sidebar */
+    background-color: #f4f4f4; /* Couleur de fond de la sidebar */
+    padding: 20px;
+    border-right: 1px solid #ddd; /* Bordure droite pour séparer la sidebar du contenu */
+  }
+  
+  .main-content {
+    flex: 1; /* Prend le reste de l'espace disponible */
+    padding: 20px;
+    background-color: #fff; /* Couleur de fond du contenu principal */
+  }

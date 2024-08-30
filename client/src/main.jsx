@@ -9,6 +9,12 @@ import Catalogue from "./pages/catalogue/Catalogue.jsx";
 import Accueil from "./pages/accueil/Accueil.jsx";
 import Login from "./pages/Auth/Login.jsx";
 import Register from "./pages/Auth/Register.jsx";
+import Dashboard from "./pages/admin/dashboard/Dashboard.jsx";
+import BookManagement from "./pages/admin/components/BookManagement.jsx";
+import AddBook from "./pages/admin/components/AddBook.jsx";
+import UserManagement from "./pages/admin/components/UserManagement.jsx";
+import AdminDashboard from "./pages/admin/components/AdminDashboard.jsx";
+import { AuthContextProvider } from "./context/AuthContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -31,14 +37,26 @@ const router = createBrowserRouter([
           { path: "register", element: <Register /> },
         ],
       },
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+        children: [
+          { path: "", element: <AdminDashboard /> },
+          { path: "book-management", element: <BookManagement /> },
+          { path: "add-book", element: <AddBook /> },
+          { path: "user-management", element: <UserManagement /> },
+        ],
+      },
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router}>
-      <App />
-    </RouterProvider>
+    <AuthContextProvider>
+      <RouterProvider router={router}>
+        <App />
+      </RouterProvider>
+    </AuthContextProvider>
   </StrictMode>
 );
