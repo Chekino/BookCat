@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 
 const bookRoutes = require("./Routes/bookRoute");
+const userRoutes = require("./Routes/userRoute");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // routes
 app.use("/api/books", bookRoutes);
+app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("hello from express server");

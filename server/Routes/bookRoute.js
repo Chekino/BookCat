@@ -7,6 +7,8 @@ const {
   deleteBook,
 } = require("../Controllers/bookController");
 
+const { requireAuth, requireAdmin } = require("../Middleware/requireAuth");
+
 const router = express.Router();
 
 //GET all books
@@ -14,10 +16,10 @@ router.get("/", getAllBooks);
 // GET a single book
 router.get("/:id", getBook);
 //POST a new book
-router.post("/", createBook);
+router.post("/", requireAuth, requireAdmin, createBook);
 //DELETE a book
-router.delete("/:id", deleteBook);
+router.delete("/:id", requireAuth, requireAdmin, deleteBook);
 //UPDATE a book
-router.patch("/:id", updateBook);
+router.patch("/:id", requireAuth, requireAdmin, updateBook);
 
 module.exports = router;
