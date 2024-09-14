@@ -4,6 +4,7 @@ require("dotenv").config();
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const path = require("path");
 
 const bookRoutes = require("./Routes/bookRoute");
 const userRoutes = require("./Routes/userRoute");
@@ -12,12 +13,22 @@ const app = express();
 
 // Middlewares pour la sécurité et le logging
 app.use(cors());
-app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"], // Permet uniquement les ressources du même domaine
+      imgSrc: ["'self'", "http://localhost:5000"], // Autorise les images provenant de ton serveur backend
+      // Ajoute d'autres règles pour les scripts, styles si nécessaire
+    },
+  })
+);
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static("uploads"));
 
 // routes
+
 app.use("/api/books", bookRoutes);
 app.use("/api/users", userRoutes);
 

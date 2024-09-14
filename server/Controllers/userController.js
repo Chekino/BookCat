@@ -9,7 +9,7 @@ const createToken = (_id) => {
   return jwt.sign({ _id }, jwtkey, { expiresIn: "3d" });
 };
 
-// Creer un utilisateur
+// Inscription Utilisateur
 const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -43,8 +43,9 @@ const registerUser = async (req, res) => {
 
     res.status(200).json({
       _id: user._id,
-      name,
-      email,
+      name: user.name,
+      email: user.email,
+      role: user.role,
       token,
     });
   } catch (err) {
@@ -70,7 +71,8 @@ const loginUser = async (req, res) => {
     res.status(200).json({
       _id: user._id,
       name: user.name,
-      email,
+      email: user.email,
+      role: user.role,
       token,
     });
   } catch (err) {

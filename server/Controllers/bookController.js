@@ -34,10 +34,27 @@ const getBook = async (req, res) => {
   }
 };
 
+//récupérer les livres récents
+const getRecentBooks = async (req, res) => {
+  try {
+    // Trier par date de création décroissante et limiter à 5 livres récents
+    const recentBooks = await Book.find().sort({ createdAt: -1 }).limit(8);
+    res.status(200).json(recentBooks);
+    console.log(recentBooks);
+  } catch (error) {
+    res.status(500).json({
+      message: "Erreur lors de la récupération des livres récents",
+      error,
+    });
+  }
+};
+
 // Creer un livre
 const createBook = async (req, res) => {
-  const { title, author, description, price, image, category, publishedDate } =
+  const { title, author, description, price, category, publishedDate } =
     req.body;
+  const image = req.file ? req.file.filename : null;
+
   // add document to db
   try {
     const book = await Book.create({
@@ -110,4 +127,28 @@ const deleteBook = async (req, res) => {
   }
 };
 
-module.exports = { getAllBooks, getBook, createBook, updateBook, deleteBook };
+// Rechercher un livre
+const searchBook = async (req, res) => {
+  const query = req.query.q;
+  try {
+    const books = await Book.find({
+      $or: [
+        { title: { $regex: query, $options: "i" } }, // Recherche insensible à la casse
+        { author: { $regex: query, $options: "i" } },
+      ],
+    });
+    res.status(200).json(books);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = {
+  getAllBooks,
+  getBook,
+  createBook,
+  updateBook,
+  deleteBook,
+  getRecentBooks,
+  searchBook,
+};
