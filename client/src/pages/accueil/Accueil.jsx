@@ -4,8 +4,50 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 
 import "./accueil.css";
+import { useEffect, useState } from "react";
 
 const Accueil = () => {
+  const [searchBook, setSearchBook] = useState("");
+  const [books, setBooks] = useState([]);
+  const [recentBooks, setRecentBooks] = useState([]);
+
+  // Fonction pour effectuer une recherche de livre
+  const handleSearch = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/books/search?q=${searchBook}`
+      );
+      if (response.ok) {
+        const result = await response.json();
+        setBooks(result); // Mettre à jour les résultats
+      } else {
+        console.log("Erreur lors de la recherche");
+      }
+    } catch (error) {
+      console.error("Erreur:", error);
+    }
+  };
+
+  // Fonction pour récupérer les livres récents depuis le backend
+  useEffect(() => {
+    const fetchRecentBooks = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/books/recents");
+        const data = await response.json();
+
+        setRecentBooks(data);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des livres récents",
+          error
+        );
+      }
+    };
+
+    fetchRecentBooks();
+  }, []);
   return (
     <>
       <header className="hero ">
@@ -14,27 +56,47 @@ const Accueil = () => {
             <h1 className="text-4xl my-8 ">
               Trouver vos meilleurs livres electroniques avec BookCat
             </h1>
-            <input
-              type="text"
-              className="input-custom text-center"
-              placeholder="Rechercher un titre, un éditeur, un auteur..."
-              autoFocus
-            />
-            <div className="m-3 ">
-              <button className="button-custom mr-2 font-medium ">
-                RECHERCHER
-              </button>
-              <button className="button-custom mr-2 font-medium	 ">
-                CATALOGUE
-              </button>
-            </div>
+            <form>
+              <input
+                type="text"
+                className="input-custom text-center"
+                value={searchBook}
+                onChange={(e) => setSearchBook(e.target.value)}
+                placeholder="Rechercher un titre, un éditeur, un auteur..."
+                autoFocus
+              />
+              <div className="mt-6">
+                {books.length > 0 ? (
+                  <select className="form-select mt-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    {books.map((book) => (
+                      <option key={book._id} value={book._id}>
+                        {book.title} - {book.author}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <p>Aucun livre trouvé</p>
+                )}
+              </div>
+              <div className="m-3 ">
+                <button
+                  className="button-custom mr-2 font-medium "
+                  onClick={handleSearch}
+                >
+                  RECHERCHER
+                </button>
+                <button className="button-custom mr-2 font-medium	 ">
+                  CATALOGUE
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </header>
       <main>
         <section className="first-section">
           <h2 className="titre-avec-petit-trait text-center text-2xl">
-            Livres les plus achetés
+            Livres les plus recents
           </h2>
           <Swiper
             slidesPerView={1}
@@ -57,78 +119,20 @@ const Accueil = () => {
             modules={[Navigation]}
             className="mySwiper "
           >
-            <SwiperSlide>
-              <img
-                src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?cs=srgb&dl=pexels-anjana-c-169994-674010.jpg&fm=jpg"
-                alt=""
-              />
-              <p>Titre</p>
-              <p>Auteur</p>
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?cs=srgb&dl=pexels-anjana-c-169994-674010.jpg&fm=jpg"
-                alt=""
-              />
-              <p>Titre</p>
-              <p>Auteur</p>
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?cs=srgb&dl=pexels-anjana-c-169994-674010.jpg&fm=jpg"
-                alt=""
-              />
-              <p>Titre</p>
-              <p>Auteur</p>
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?cs=srgb&dl=pexels-anjana-c-169994-674010.jpg&fm=jpg"
-                alt=""
-              />
-              <p>Titre</p>
-              <p>Auteur</p>
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?cs=srgb&dl=pexels-anjana-c-169994-674010.jpg&fm=jpg"
-                alt=""
-              />
-              <p>Titre</p>
-              <p>Auteur</p>
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?cs=srgb&dl=pexels-anjana-c-169994-674010.jpg&fm=jpg"
-                alt=""
-              />
-              <p>Titre</p>
-              <p>Auteur</p>
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?cs=srgb&dl=pexels-anjana-c-169994-674010.jpg&fm=jpg"
-                alt=""
-              />
-              <p>Titre</p>
-              <p>Auteur</p>
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?cs=srgb&dl=pexels-anjana-c-169994-674010.jpg&fm=jpg"
-                alt=""
-              />
-              <p>Titre</p>
-              <p>Auteur</p>
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?cs=srgb&dl=pexels-anjana-c-169994-674010.jpg&fm=jpg"
-                alt=""
-              />
-              <p>Titre</p>
-              <p>Auteur</p>
-            </SwiperSlide>
+            {recentBooks.map((book) => (
+              <SwiperSlide key={book._id}>
+                <img
+                  src={
+                    book.image.startsWith("/uploads")
+                      ? `http://localhost:5000${book.image}`
+                      : `http://localhost:5000/uploads/${book.image}`
+                  }
+                  alt={book.title}
+                />
+                <p>{book.title}</p>
+                <p>{book.author}</p>
+              </SwiperSlide>
+            ))}
           </Swiper>
         </section>
         <section>

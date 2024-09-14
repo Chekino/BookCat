@@ -15,6 +15,7 @@ import AddBook from "./pages/admin/components/AddBook.jsx";
 import UserManagement from "./pages/admin/components/UserManagement.jsx";
 import AdminDashboard from "./pages/admin/components/AdminDashboard.jsx";
 import { AuthContextProvider } from "./context/AuthContext.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -38,13 +39,18 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "dashboard",
-        element: <Dashboard />,
+        element: <PrivateRoute />, // Protection des routes admin
         children: [
-          { path: "", element: <AdminDashboard /> },
-          { path: "book-management", element: <BookManagement /> },
-          { path: "add-book", element: <AddBook /> },
-          { path: "user-management", element: <UserManagement /> },
+          {
+            path: "dashboard",
+            element: <Dashboard />, // Le Dashboard avec la sidebar
+            children: [
+              { path: "", element: <AdminDashboard /> }, // Sous-route admin par défaut
+              { path: "book-management", element: <BookManagement /> },
+              { path: "add-book", element: <AddBook /> },
+              { path: "user-management", element: <UserManagement /> }, // Rendre ici
+            ],
+          },
         ],
       },
     ],

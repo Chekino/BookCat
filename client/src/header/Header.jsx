@@ -10,17 +10,23 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import "./header.css";
 import { Link } from "react-router-dom";
+import { useLogout } from "../hooks/useLogout";
+import useAuthContext from "../hooks/useAuthContext";
 
 const navigation = [
   { name: "ACCUEIL", href: "/", current: true },
   { name: "CATALOGUE", href: "/catalogue", current: false },
-  { name: "ADMIN DASHBOARD", href: "/dashboard", current: false },
 ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 const Header = () => {
+  const { user } = useAuthContext();
+  const { logout } = useLogout();
+  const handleClick = () => {
+    logout();
+  };
   return (
     <div>
       <Disclosure as="nav" className="nav-color">
@@ -52,39 +58,49 @@ const Header = () => {
 
               <div className="hidden sm:flex justify-center flex-1">
                 <div className="flex space-x-4">
-                  {navigation.map((item) => (
+                  <Link
+                    to="/"
+                    className="ml-4 text-sm font-medium text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md"
+                  >
+                    ACCUEIL
+                  </Link>
+                  <Link
+                    to="/catalogue"
+                    className="ml-4 text-sm font-medium text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md"
+                  >
+                    CATALOGUE
+                  </Link>
+                  {user && user.role === "admin" && (
                     <Link
-                      key={item.name}
-                      to={item.href}
-                      aria-current={item.current ? "page" : undefined}
-                      className={classNames(
-                        item.current
-                          ? "bg-gray-900 text-white"
-                          : "text-black-300 hover:bg-gray-700 hover:text-white",
-                        "rounded-md px-3 py-2 text-sm font-medium"
-                      )}
+                      to="/dashboard"
+                      className="ml-4 text-sm font-medium text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md"
                     >
-                      {item.name}
+                      ADMIN
                     </Link>
-                  ))}
+                  )}
                 </div>
               </div>
             </div>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-              <button
-                type="button"
-                className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-              >
-                <span className="absolute -inset-1.5" />
-                <span className="sr-only">View notifications</span>
-                <BellIcon aria-hidden="true" className="h-6 w-6" />
-              </button>
-              <Link
-                to="/authentification"
-                className="ml-4 text-sm font-medium text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md"
-              >
-                S'IDENTIFIER
-              </Link>
+            <div className="">
+              {user && (
+                <div>
+                  <span className="text-black-300 px-3">{user.name}</span>
+                  <button
+                    onClick={handleClick}
+                    className="ml-4 text-sm font-medium text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md"
+                  >
+                    DECONNEXION
+                  </button>
+                </div>
+              )}
+              {!user && (
+                <Link
+                  to="/authentification"
+                  className="ml-4 text-sm font-medium text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md"
+                >
+                  S'IDENTIFIER
+                </Link>
+              )}
 
               {/* Profile dropdown 
               <Menu as="div" className="relative ml-3">

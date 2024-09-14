@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useLogin } from "../../hooks/useLogin";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login, error, isLoading } = useLogin();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(email, password);
+    await login(email, password);
   };
   return (
     <div className="hero min-h-screen">
@@ -47,8 +49,11 @@ const Login = () => {
               </label>
             </div>
             <div className="form-control mt-4">
-              <button className="btn btn-primary">Se connecter</button>
+              <button className="btn btn-primary" disabled={isLoading}>
+                Se connecter
+              </button>
             </div>
+            {error && <p className="text-red-500">{error}</p>}
             <div className="form-control text-center mb-3 ">
               <Link to="/authentification/register">
                 <button className="btn btn-white ">Inscription </button>
