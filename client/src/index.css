@@ -61,7 +61,16 @@ p {
 .button-custom:hover {
   background-color: #2CA9E5; /* Couleur légèrement plus foncée pour l'effet hover */
 }
-
+.button-nav{
+  background-color: #38BDF8;
+  
+  border: none;
+  color: black;
+  padding: 10px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 .input-custom {
   background-color: rgba(249, 250, 251, 0.5); /* #F9FAFB with 50% opacity */
   color: #000000; /* Text color black */

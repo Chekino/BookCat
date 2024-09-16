@@ -18,10 +18,14 @@ const Footer = () => {
         <a className="link link-hover">Press kit</a>
       </nav>
       <nav>
-        <h6 className="footer-title">Legal</h6>
-        <a className="link link-hover">Terms of use</a>
-        <a className="link link-hover">Privacy policy</a>
-        <a className="link link-hover">Cookie policy</a>
+        <h6 className="">Copyright © 2022 - All right reserved</h6>
+        <a
+          className="link footer-title"
+          href="https://dicat.pro"
+          target="_blank"
+        >
+          Create by: DICAT.PRO
+        </a>
       </nav>
     </footer>
   );

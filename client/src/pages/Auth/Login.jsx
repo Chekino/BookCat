@@ -49,7 +49,7 @@ const Login = () => {
               </label>
             </div>
             <div className="form-control mt-4">
-              <button className="btn btn-primary" disabled={isLoading}>
+              <button className="button-custom" disabled={isLoading}>
                 Se connecter
               </button>
             </div>

@@ -34,4 +34,8 @@
   transform: scale(1.02); /* Légère augmentation de la taille pour un effet de zoom */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre portée pour un effet de profondeur */
 }
-  
+
+.card-title{
+  color: #38BDF8;
+}
+

@@ -87,7 +87,7 @@ const Header = () => {
                   <span className="text-black-300 px-3">{user.name}</span>
                   <button
                     onClick={handleClick}
-                    className="ml-4 text-sm font-medium text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md"
+                    className="ml-4 text-sm font-medium text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md button-nav"
                   >
                     DECONNEXION
                   </button>
@@ -96,7 +96,7 @@ const Header = () => {
               {!user && (
                 <Link
                   to="/authentification"
-                  className="ml-4 text-sm font-medium text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md"
+                  className="ml-4 text-sm font-medium text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md button-nav"
                 >
                   S'IDENTIFIER
                 </Link>

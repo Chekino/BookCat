@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 import diversity from "../../assets/diversity.jpg";
 import accesible from "../../assets/accesible.jpg";
+import abordable from "../../assets/abordable.png";
 import BeatLoader from "react-spinners/BeatLoader";
 
 const Accueil = () => {
@@ -177,6 +178,7 @@ const Accueil = () => {
                 <img
                   src={`http://localhost:5000/uploads/${book.image}`}
                   alt={book.title}
+                  className="rounded-lg"
                 />
                 <p>{book.title}</p>
                 <p>{book.author}</p>
@@ -195,23 +197,42 @@ const Accueil = () => {
             offrir une large sélection d’eBooks couvrant tous les genres, des
             romans aux ouvrages spécialisés. <br />
             Notre mission est simple : permettre à chaque lecteur de trouver
-            l’eBook qui lui correspond, tout en soutenant les auteurs, qu'ils
-            soient débutants ou confirmés, en leur offrant un espace pour
-            partager leurs œuvres avec le monde entier. À travers notre
-            catalogue diversifié et en constante évolution, nous mettons un
-            point d’honneur à proposer des livres numériques de qualité, faciles
-            à télécharger et à lire sur tous vos appareils. Rejoignez-nous dans
-            notre aventure et explorez une nouvelle manière de lire, à portée de
-            clic.
+            l’eBook qui lui correspond. À travers notre catalogue diversifié et
+            en constante évolution, nous mettons un point d’honneur à proposer
+            des livres numériques de qualité, faciles à télécharger et à lire
+            sur tous vos appareils. Rejoignez-nous dans notre aventure et
+            explorez une nouvelle manière de lire, à portée de clic.
+          </div>
+          <div
+            className="flex justify-center mt-4"
+            onClick={() => navigate("authentification/register")}
+          >
+            <button className="button-custom flex">
+              Rejoignez-nous dès maintenant{" "}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
+                />
+              </svg>
+            </button>
           </div>
         </section>
 
         <section className="third-section">
-          <h2 className="titre-avec-petit-trait text-center text-2xl mt-6">
+          <h2 className="titre-avec-petit-trait text-center text-2xl mt-6 mb-4">
             Pourquoi choisir BookCat ?
           </h2>
           <div className="flex justify-center items-center gap-4 flex-wrap">
-            <div className="card shadow-xl">
+            <div className="card shadow-xl bg-base-100">
               <figure className="px-10 pt-10">
                 <img src={diversity} alt="Shoes" className="rounded-xl" />
               </figure>
@@ -237,11 +258,7 @@ const Accueil = () => {
             </div>
             <div className="card bg-base-100 w-96 shadow-xl">
               <figure className="px-10 pt-10">
-                <img
-                  src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                  alt="Shoes"
-                  className="rounded-xl"
-                />
+                <img src={abordable} alt="Shoes" className="rounded-xl" />
               </figure>
               <div className="card-body items-center text-center">
                 <h2 className="card-title">Coût Abordable</h2>

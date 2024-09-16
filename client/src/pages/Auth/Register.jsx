@@ -64,7 +64,7 @@ const Register = () => {
               </label>
             </div>
             <div className="form-control mt-4">
-              <button className="btn btn-primary" disabled={isLoading}>
+              <button className="button-custom" disabled={isLoading}>
                 S'inscrire
               </button>
               {error && <div className="text-red-500">{error}</div>}
