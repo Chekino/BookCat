@@ -9,31 +9,43 @@ import { useNavigate } from "react-router-dom";
 
 import diversity from "../../assets/diversity.jpg";
 import accesible from "../../assets/accesible.jpg";
+import BeatLoader from "react-spinners/BeatLoader";
 
 const Accueil = () => {
   const [searchBook, setSearchBook] = useState("");
-  const [books, setBooks] = useState([]);
+  const [suggestions, setSuggestions] = useState([]); // État pour les suggestions de livres
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(""); // État pour gérer les erreurs
   const [recentBooks, setRecentBooks] = useState([]);
+
   const navigate = useNavigate();
 
-  // Fonction pour effectuer une recherche de livre
-  const handleSearch = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/books/search?q=${searchBook}`
-      );
-      if (response.ok) {
-        const result = await response.json();
-        setBooks(result); // Mettre à jour les résultats
-      } else {
-        console.log("Erreur lors de la recherche");
-      }
-    } catch (error) {
-      console.error("Erreur:", error);
-    }
+  // Fonction de debounce pour limiter le nombre d'appels réseau
+  const searchBooks = (query) => {
+    setLoading(true); // Activer le loader avant d'envoyer la requête
+    fetch(`http://localhost:5000/api/books/search?query=${query}`)
+      .then((response) => response.json())
+      .then((data) => {
+        // Temporisation de 2 secondes avant de désactiver le loader et afficher les résultats
+        setTimeout(() => {
+          setSuggestions(data); // Mettre à jour les suggestions avec les résultats
+          setLoading(false); // Désactiver le loader après 2 secondes
+        }, 2000); // Durée du loader (2 secondes ici)
+      })
+      .catch((err) => {
+        setError("Erreur lors de la recherche"); // Gérer les erreurs
+        setLoading(false); // Désactiver le loader en cas d'erreur
+      });
   };
+
+  // useEffect pour déclencher la recherche à chaque changement dans l'input
+  useEffect(() => {
+    if (searchBook.length > 0) {
+      searchBooks(searchBook); // Rechercher à chaque changement dans l'input
+    } else {
+      setSuggestions([]); // Réinitialiser les suggestions si l'input est vide
+    }
+  }, [searchBook]);
 
   // Fonction pour récupérer les livres récents depuis le backend
   useEffect(() => {
@@ -67,29 +79,58 @@ const Accueil = () => {
                 className="input-custom text-center"
                 value={searchBook}
                 onChange={(e) => setSearchBook(e.target.value)}
-                placeholder="Rechercher un titre, un éditeur, un auteur..."
+                placeholder="Rechercher un titre, un éditeur, un auteur... "
                 autoFocus
               />
+
+              {/* Loader pendant la recherche */}
+              {loading && (
+                <BeatLoader
+                  color="#38BDF8"
+                  size={20}
+                  speedMultiplier={0.5}
+                  className="mt-4"
+                />
+              )}
+
+              {/* Affiche les suggestions ou un message si aucun livre n'est trouvé */}
               <div className="mt-6">
-                {books.length > 0 ? (
-                  <select className="form-select mt-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                    {books.map((book) => (
-                      <option key={book._id} value={book._id}>
-                        {book.title} - {book.author}
-                      </option>
+                {error && <p>{error}</p>}
+
+                {/* Si des suggestions existent, on les affiche dans une liste */}
+                {!loading && suggestions.length > 0 ? (
+                  <ul className="suggestions-list">
+                    {suggestions.slice(0, 4).map((book) => (
+                      <li
+                        onClick={() => navigate(`/book/${book._id}`)}
+                        key={book._id}
+                        className="suggestion-item flex items-center border-b py-2 cursor-pointer"
+                      >
+                        {/* Image du livre */}
+                        <img
+                          src={`http://localhost:5000/uploads/${book.image}`}
+                          alt={book.title}
+                          className="book-image w-16 h-16 object-cover mr-4"
+                        />
+                        {/* Informations du livre */}
+                        <div className="book-info">
+                          <h3 className="book-title text-lg font-semibold">
+                            {book.title}
+                          </h3>
+                          <p className="book-author text-sm text-gray-500">
+                            par {book.author}
+                          </p>
+                        </div>
+                      </li>
                     ))}
-                  </select>
+                  </ul>
                 ) : (
-                  <p>Aucun livre trouvé</p>
+                  !loading &&
+                  searchBook.trim() !== "" && <p>Aucun livre trouvé</p> // Affiche le message uniquement si une recherche a été effectuée
                 )}
               </div>
+
               <div className="m-3 ">
-                <button
-                  className="button-custom mr-2 font-medium "
-                  onClick={handleSearch}
-                >
-                  RECHERCHER
-                </button>
                 <button
                   className="button-custom mr-2 font-medium"
                   onClick={() => navigate("/catalogue")}
@@ -131,6 +172,7 @@ const Accueil = () => {
               <SwiperSlide
                 onClick={() => navigate(`/book/${book._id}`)}
                 key={book._id}
+                className="cursor-pointer"
               >
                 <img
                   src={`http://localhost:5000/uploads/${book.image}`}

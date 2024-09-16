@@ -129,7 +129,7 @@ const deleteBook = async (req, res) => {
 
 // Rechercher un livre
 const searchBook = async (req, res) => {
-  const query = req.query.q;
+  const { query } = req.query;
   try {
     const books = await Book.find({
       $or: [

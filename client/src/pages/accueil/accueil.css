@@ -24,4 +24,14 @@
     padding-top: 10px;
     
 }
+
+.suggestion-item {
+  transition: background-color 0.3s, transform 0.3s; /* Ajoute une transition fluide */
+}
+
+.suggestion-item:hover {
+  background-color: #f0f4f8; /* Couleur de fond au survol (ajustez selon vos préférences) */
+  transform: scale(1.02); /* Légère augmentation de la taille pour un effet de zoom */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre portée pour un effet de profondeur */
+}
   
