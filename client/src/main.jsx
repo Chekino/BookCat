@@ -16,6 +16,7 @@ import UserManagement from "./pages/admin/components/UserManagement.jsx";
 import AdminDashboard from "./pages/admin/components/AdminDashboard.jsx";
 import { AuthContextProvider } from "./context/AuthContext.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
+import Bookview from "./pages/bookview/BookView.jsx";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
           { path: "", element: <Login /> },
           { path: "register", element: <Register /> },
         ],
+      },
+      {
+        path: "book/:id",
+        element: <Bookview />,
       },
       {
         element: <PrivateRoute />, // Protection des routes admin

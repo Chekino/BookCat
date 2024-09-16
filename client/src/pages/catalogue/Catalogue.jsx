@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import "./catalogue.css";
+import { useNavigate } from "react-router-dom";
 
 const Catalogue = () => {
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
@@ -35,14 +37,14 @@ const Catalogue = () => {
         <section className="catalogue container mx-auto">
           <div className="flex flex-wrap gap-8 p-4 justify-center">
             {data.map((book) => (
-              <div key={book._id} className="flex flex-col items-center">
+              <div
+                key={book._id}
+                className="flex flex-col items-center cursor-pointer"
+                onClick={() => navigate(`/book/${book._id}`)}
+              >
                 <div className="relative group">
                   <img
-                    src={
-                      book.image.startsWith("/uploads")
-                        ? `http://localhost:5000${book.image}`
-                        : `http://localhost:5000/uploads/${book.image}`
-                    }
+                    src={`http://localhost:5000/uploads/${book.image}`}
                     alt={book.title}
                     className="w-40 h-auto mb-2 transition-transform duration-300 ease-in-out group-hover:scale-105"
                   />

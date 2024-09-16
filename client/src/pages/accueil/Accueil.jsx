@@ -5,11 +5,16 @@ import { Navigation } from "swiper/modules";
 
 import "./accueil.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import diversity from "../../assets/diversity.jpg";
+import accesible from "../../assets/accesible.jpg";
 
 const Accueil = () => {
   const [searchBook, setSearchBook] = useState("");
   const [books, setBooks] = useState([]);
   const [recentBooks, setRecentBooks] = useState([]);
+  const navigate = useNavigate();
 
   // Fonction pour effectuer une recherche de livre
   const handleSearch = async (e) => {
@@ -85,7 +90,10 @@ const Accueil = () => {
                 >
                   RECHERCHER
                 </button>
-                <button className="button-custom mr-2 font-medium	 ">
+                <button
+                  className="button-custom mr-2 font-medium"
+                  onClick={() => navigate("/catalogue")}
+                >
                   CATALOGUE
                 </button>
               </div>
@@ -120,13 +128,12 @@ const Accueil = () => {
             className="mySwiper "
           >
             {recentBooks.map((book) => (
-              <SwiperSlide key={book._id}>
+              <SwiperSlide
+                onClick={() => navigate(`/book/${book._id}`)}
+                key={book._id}
+              >
                 <img
-                  src={
-                    book.image.startsWith("/uploads")
-                      ? `http://localhost:5000${book.image}`
-                      : `http://localhost:5000/uploads/${book.image}`
-                  }
+                  src={`http://localhost:5000/uploads/${book.image}`}
                   alt={book.title}
                 />
                 <p>{book.title}</p>
@@ -140,31 +147,50 @@ const Accueil = () => {
             Qui sommes-nous ?
           </h2>
           <div className="container mx-auto max-w-screen-lg px-4 text-xl ">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis,
-            voluptatum expedita laboriosam inventore vel dicta et fugiat porro
-            quia voluptate, soluta architecto unde mollitia accusantium eveniet
-            natus, nostrum similique incidunt! Lorem ipsum, dolor sit amet
-            consectetur adipisicing elit. Dolore vitae, consequuntur eos,
-            impedit accusantium nemo eaque natus nihil laboriosam, esse soluta
-            perferendis. Commodi id quod totam fuga quia itaque accusantium.
+            Chez BookCat, nous croyons que la lecture doit être accessible à
+            tous, où que vous soyez et à tout moment. Fondée en 2024 par un
+            passionné de livres et de technologie, notre plateforme est dédiée à
+            offrir une large sélection d’eBooks couvrant tous les genres, des
+            romans aux ouvrages spécialisés. <br />
+            Notre mission est simple : permettre à chaque lecteur de trouver
+            l’eBook qui lui correspond, tout en soutenant les auteurs, qu'ils
+            soient débutants ou confirmés, en leur offrant un espace pour
+            partager leurs œuvres avec le monde entier. À travers notre
+            catalogue diversifié et en constante évolution, nous mettons un
+            point d’honneur à proposer des livres numériques de qualité, faciles
+            à télécharger et à lire sur tous vos appareils. Rejoignez-nous dans
+            notre aventure et explorez une nouvelle manière de lire, à portée de
+            clic.
           </div>
         </section>
+
         <section className="third-section">
           <h2 className="titre-avec-petit-trait text-center text-2xl mt-6">
-            Comment acheté un livre ?
+            Pourquoi choisir BookCat ?
           </h2>
           <div className="flex justify-center items-center gap-4 flex-wrap">
             <div className="card shadow-xl">
               <figure className="px-10 pt-10">
-                <img
-                  src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                  alt="Shoes"
-                  className="rounded-xl"
-                />
+                <img src={diversity} alt="Shoes" className="rounded-xl" />
               </figure>
               <div className="card-body items-center text-center">
-                <h2 className="card-title">Etape 1</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                <h2 className="card-title">Diversité</h2>
+                <p>
+                  Nous offrons une vaste collection d'eBooks couvrant tous les
+                  genres et styles.
+                </p>
+              </div>
+            </div>
+            <div className="card bg-base-100 w-96 shadow-xl">
+              <figure className="px-10 pt-10">
+                <img src={accesible} alt="Shoes" className="rounded-xl" />
+              </figure>
+              <div className="card-body items-center text-center">
+                <h2 className="card-title">Accesibilité</h2>
+                <p>
+                  Nos livres sont accessibles depuis tous vos appareils, où que
+                  vous soyez.
+                </p>
               </div>
             </div>
             <div className="card bg-base-100 w-96 shadow-xl">
@@ -176,21 +202,12 @@ const Accueil = () => {
                 />
               </figure>
               <div className="card-body items-center text-center">
-                <h2 className="card-title">Etape 1</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
-              </div>
-            </div>
-            <div className="card bg-base-100 w-96 shadow-xl">
-              <figure className="px-10 pt-10">
-                <img
-                  src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                  alt="Shoes"
-                  className="rounded-xl"
-                />
-              </figure>
-              <div className="card-body items-center text-center">
-                <h2 className="card-title">Etape 1</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                <h2 className="card-title">Coût Abordable</h2>
+                <p>
+                  Que vous soyez un lecteur passionné ou un novice à la
+                  recherche de nouvelles découvertes, vous trouverez des livres
+                  captivants à des tarifs réduits qui respectent votre budget.
+                </p>
               </div>
             </div>
           </div>
