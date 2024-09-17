@@ -12,12 +12,12 @@ const userRoutes = require("./Routes/userRoute");
 const app = express();
 
 // Middlewares pour la sécurité et le logging
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors());
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"], // Permet uniquement les ressources du même domaine
-      imgSrc: ["'self'", "localhost:5000"], // Autorise les images provenant de ton serveur backend
+      imgSrc: ["'self'", "http://localhost:5000"], // Autorise les images provenant de ton serveur backend
       // Ajoute d'autres règles pour les scripts, styles si nécessaire
     },
   })
