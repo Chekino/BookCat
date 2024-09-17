@@ -12,7 +12,7 @@ const userRoutes = require("./Routes/userRoute");
 const app = express();
 
 // Middlewares pour la sécurité et le logging
-app.use(cors());
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
