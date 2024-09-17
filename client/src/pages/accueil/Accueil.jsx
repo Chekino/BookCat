@@ -20,6 +20,11 @@ const Accueil = () => {
   const [recentBooks, setRecentBooks] = useState([]);
 
   const navigate = useNavigate();
+  const truncateTitle = (title, maxLength) => {
+    return title.length > maxLength
+      ? `${title.substring(0, maxLength)}...`
+      : title;
+  };
 
   // Fonction de debounce pour limiter le nombre d'appels réseau
   const searchBooks = (query) => {
@@ -109,7 +114,7 @@ const Accueil = () => {
                       >
                         {/* Image du livre */}
                         <img
-                          src={`http://localhost:5000/uploads/${book.image}`}
+                          src={`http://localhost:5000/uploads/images/${book.image}`}
                           alt={book.title}
                           className="book-image w-16 h-16 object-cover mr-4"
                         />
@@ -176,12 +181,12 @@ const Accueil = () => {
                 className="cursor-pointer"
               >
                 <img
-                  src={`http://localhost:5000/uploads/${book.image}`}
+                  src={`http://localhost:5000/uploads/images/${book.image}`}
                   alt={book.title}
                   className="rounded-lg"
                 />
-                <p>{book.title}</p>
-                <p>{book.author}</p>
+                <p>{truncateTitle(book.title, 30)}</p>
+                <p className="font-semibold">{book.author}</p>
               </SwiperSlide>
             ))}
           </Swiper>

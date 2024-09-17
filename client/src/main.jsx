@@ -17,6 +17,7 @@ import AdminDashboard from "./pages/admin/components/AdminDashboard.jsx";
 import { AuthContextProvider } from "./context/AuthContext.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
 import Bookview from "./pages/bookview/BookView.jsx";
+import { Toaster } from "sonner";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <Toaster richColors position="top-center" />
     <AuthContextProvider>
       <RouterProvider router={router}>
         <App />

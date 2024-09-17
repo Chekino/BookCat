@@ -7,6 +7,7 @@ const {
   deleteBook,
   getRecentBooks,
   searchBook,
+  downloadPDF,
 } = require("../Controllers/bookController");
 
 const { requireAuth, requireAdmin } = require("../Middleware/requireAuth");
@@ -24,9 +25,21 @@ router.get("/", getAllBooks);
 // GET a single book
 router.get("/:id", getBook);
 
+// DOWNLOAD a book
+router.get("/:id/download", requireAuth, downloadPDF);
+
 // Routes réservées aux administrateurs
 //POST a new book
-router.post("/", requireAuth, requireAdmin, upload.single("image"), createBook);
+router.post(
+  "/",
+  requireAuth,
+  requireAdmin,
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "pdf", maxCount: 1 },
+  ]),
+  createBook
+);
 //DELETE a book
 router.delete("/:id", requireAuth, requireAdmin, deleteBook);
 //UPDATE a book

@@ -1,16 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/20/solid";
 import FadeLoader from "react-spinners/FadeLoader";
+import BarLoader from "react-spinners/BarLoader";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { toast } from "sonner";
 
 export default function Bookview() {
   const { id } = useParams(); // Récupère l'ID du livre depuis l'URL
   const [book, setBook] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); // État pour le loader
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+
+  const truncateTitle = (title, maxLength) => {
+    return title.length > maxLength
+      ? `${title.substring(0, maxLength)}...`
+      : title;
+  };
 
   useEffect(() => {
     const fetchBookDetails = async () => {
@@ -26,6 +37,52 @@ export default function Bookview() {
     fetchBookDetails();
   }, [id]);
 
+  const handleDownload = async () => {
+    try {
+      if (!user.token) {
+        throw new Error("Vous devez vous connecter pour télécharger");
+      } // Vérifie que le token est bien récupéré
+
+      setLoading(true); // Affiche le loader
+
+      // Simule un délai avant le téléchargement
+      setTimeout(async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:5000/api/books/${id}/download`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            }
+          );
+          if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `${book.title}.pdf`; // Nom du fichier PDF
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setLoading(false); // Cacher le loader après le téléchargement
+          } else {
+            console.error(
+              "Erreur lors du téléchargement",
+              await response.text()
+            );
+            setLoading(false); // Cacher le loader même en cas d'erreur
+          }
+        } catch (error) {
+          toast.error("Erreur lors du téléchargement");
+          setLoading(false); // Cacher le loader en cas d'erreur
+        }
+      }, 10000); // Délai de 10 secondes
+    } catch (error) {
+      toast.error("Veuillez d'abord vous connecter !");
+    }
+  };
   if (!book) {
     return <FadeLoader color="#38BDF8" className="mx-auto my-10" />; // Tu peux personnaliser ce message ou ajouter un spinner
   }
@@ -58,9 +115,9 @@ export default function Bookview() {
             <li className="text-sm">
               <a
                 aria-current="page"
-                className="font-medium text-gray-500 hover:text-gray-600"
+                className="font-medium text-gray-500 hover:text-gray-600 "
               >
-                {book.title}
+                {truncateTitle(book.title, 20)}
               </a>
             </li>
           </ol>
@@ -70,7 +127,7 @@ export default function Bookview() {
         <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
           <div className="">
             <img
-              src={`http://localhost:5000/uploads/${book.image}`}
+              src={`http://localhost:5000/uploads/images/${book.image}`}
               alt={book.title}
               className=" object-cover object-center "
             />
@@ -79,10 +136,10 @@ export default function Bookview() {
           <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
             {/* Description and details */}
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl p-2  ">
-                {book.title}
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl p-2 italic">
+                "{book.title}" <p>Par {book.author} </p>
               </h1>
-              <h3 className="sr-only">Description</h3>
+              <p className="card-title">Description</p>
 
               <div className="space-y-6">
                 <p className="text-base text-gray-900">{book.description}</p>
@@ -90,18 +147,18 @@ export default function Bookview() {
             </div>
             {/* Reviews */}
             <div className="mt-6">
-              <h3 className="sr-only">Reviews</h3>
               <div className="flex items-center">
-                <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"></div>
                 <p className="text-3xl tracking-tight text-gray-900">
                   {book.price} FCFA
                 </p>
               </div>
             </div>
-            <form className="mb-4 ">
+            {loading ? (
+              <BarLoader color="#38BDF8" className="mx-auto" /> // Affiche le loader
+            ) : (
               <button
-                type="submit"
                 className="mt-5 flex w-full items-center justify-center  button-custom"
+                onClick={handleDownload}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -114,12 +171,12 @@ export default function Bookview() {
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                    d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m-6 3.75 3 3m0 0 3-3m-3 3V1.5m6 9h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75"
                   />
                 </svg>
-                Ajouter au Panier
+                Telecharger l'Ebook
               </button>
-            </form>
+            )}
           </div>
         </div>
 

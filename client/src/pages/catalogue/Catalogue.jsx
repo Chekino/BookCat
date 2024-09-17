@@ -44,7 +44,7 @@ const Catalogue = () => {
               >
                 <div className="relative group">
                   <img
-                    src={`http://localhost:5000/uploads/${book.image}`}
+                    src={`http://localhost:5000/uploads/images/${book.image}`}
                     alt={book.title}
                     className="w-40 h-auto mb-2 transition-transform duration-300 ease-in-out group-hover:scale-105"
                   />
@@ -52,7 +52,7 @@ const Catalogue = () => {
                 </div>
                 <div className="text-center">
                   <p className="font-semibold">{book.author} </p>
-                  <p>{book.title} </p>
+                  <p className="truncate w-40">{book.title} </p>
                 </div>
               </div>
             ))}

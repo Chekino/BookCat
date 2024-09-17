@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context/AuthContext";
+import { toast } from "sonner";
 
 const BookManagement = () => {
   const [allBooks, setAllBooks] = useState([]);
@@ -26,16 +27,6 @@ const BookManagement = () => {
 
   // Fonction pour supprimer un livre
   const handleDelete = async (bookId) => {
-    const confirmDelete = window.confirm(
-      "Voulez-vous vraiment supprimer ce livre ?"
-    );
-    if (!confirmDelete) return;
-
-    if (!user) {
-      alert("Vous devez être connecté pour supprimer un livre.");
-      return;
-    }
-
     try {
       const response = await fetch(
         `http://localhost:5000/api/books/${bookId}`,
@@ -50,7 +41,7 @@ const BookManagement = () => {
 
       if (response.ok) {
         setAllBooks(allBooks.filter((book) => book._id !== bookId));
-        alert("Livre supprimé avec succès !");
+        toast.success("Livre supprimé avec succès !");
       } else {
         const errorData = await response.json();
         console.error(
@@ -96,11 +87,7 @@ const BookManagement = () => {
                   <div className="avatar">
                     <div className="mask mask-squircle h-12 w-12">
                       <img
-                        src={
-                          book.image.startsWith("/uploads")
-                            ? `http://localhost:5000${book.image}`
-                            : `http://localhost:5000/uploads/${book.image}`
-                        }
+                        src={`http://localhost:5000/uploads/images/${book.image}`}
                         alt={book.title}
                       />
                     </div>
@@ -117,10 +104,34 @@ const BookManagement = () => {
                 <button className="btn btn-ghost btn-xs">Modifier</button>
                 <button
                   className="btn btn-error btn-xs"
-                  onClick={() => handleDelete(book._id)}
+                  onClick={() =>
+                    document.getElementById("my_modal_1").showModal()
+                  }
                 >
                   Supprimer
                 </button>
+                <dialog id="my_modal_1" className="modal">
+                  <div className="modal-box">
+                    <h3 className="font-bold text-lg text-center">
+                      Voulez vous supprimer ce livre ?
+                    </h3>
+                    <p className="py-4 text-center">
+                      Appuyez sur Oui pour supprimer et sur Non pour annuler
+                    </p>
+                    <div className="modal-action">
+                      <form method="dialog">
+                        {/* if there is a button in form, it will close the modal */}
+                        <button
+                          className="btn "
+                          onClick={() => handleDelete(book._id)}
+                        >
+                          Oui
+                        </button>
+                        <button className=" btn btn-danger ">Non</button>
+                      </form>
+                    </div>
+                  </div>
+                </dialog>
               </th>
             </tr>
           ))}

@@ -1,3 +1,5 @@
+const path = require("path");
+const fs = require("fs");
 const Book = require("../Models/bookModel");
 const mongoose = require("mongoose");
 
@@ -53,7 +55,9 @@ const getRecentBooks = async (req, res) => {
 const createBook = async (req, res) => {
   const { title, author, description, price, category, publishedDate } =
     req.body;
-  const image = req.file ? req.file.filename : null;
+  const image =
+    req.files && req.files.image ? req.files.image[0].filename : null; // Chemin pour l'image
+  const pdf = req.files && req.files.pdf ? req.files.pdf[0].filename : null; // Chemin pour le PDF
 
   // add document to db
   try {
@@ -63,6 +67,7 @@ const createBook = async (req, res) => {
       description,
       price,
       image,
+      pdf,
       category,
       publishedDate,
     });
@@ -143,6 +148,46 @@ const searchBook = async (req, res) => {
   }
 };
 
+// Télécharger un PDF
+const downloadPDF = async (req, res) => {
+  const { id } = req.params;
+
+  // Vérifier si l'ID est valide
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "Livre non trouvé" });
+  }
+
+  try {
+    const book = await Book.findById(id);
+
+    // Vérifier si le livre existe
+    if (!book || !book.pdf) {
+      return res.status(404).json({ error: "Livre ou PDF non trouvé" });
+    }
+
+    // Déterminer le chemin du fichier
+    const filePath = path.join(__dirname, "../uploads/pdfs", book.pdf);
+
+    console.log(`Chemin du fichier: ${filePath}`); // Pour déboguer le chemin du fichier
+
+    // Vérifier si le fichier existe
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ error: "Fichier PDF non trouvé" });
+    }
+
+    // Envoyer le fichier PDF
+    res.download(filePath, book.pdf, (err) => {
+      if (err) {
+        console.error("Erreur lors du téléchargement:", err);
+        res.status(500).json({ error: "Erreur lors du téléchargement" });
+      }
+    });
+  } catch (error) {
+    console.error("Erreur serveur:", error); // Pour déboguer l'erreur
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getAllBooks,
   getBook,
@@ -151,4 +196,5 @@ module.exports = {
   deleteBook,
   getRecentBooks,
   searchBook,
+  downloadPDF,
 };

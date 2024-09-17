@@ -3,9 +3,11 @@ import axios from "axios";
 import React, { useContext, useState } from "react";
 import FadeLoader from "react-spinners/FadeLoader";
 import { AuthContext } from "../../../context/AuthContext";
+import { toast } from "sonner";
 
 export default function AddBook() {
   const [image, setImage] = useState(null);
+  const [pdf, setPdf] = useState(null); // pour le fichier PDF
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
@@ -34,20 +36,18 @@ export default function AddBook() {
     if (image) {
       formData.append("image", image);
     }
-
+    if (pdf) {
+      formData.append("pdf", pdf);
+    }
     try {
       // Envoi des données au serveur
-      const response = await axios.post(
-        "http://localhost:5000/api/books",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${user.token}`, // Utiliser le token de l'utilisateur connecté
-          },
-        }
-      );
-      console.log("Livre ajouté :", response.data);
+      await axios.post("http://localhost:5000/api/books", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${user.token}`, // Utiliser le token de l'utilisateur connecté
+        },
+      });
+      toast.success("Livre ajouté avec succès!");
       // Réinitialiser le formulaire
       setTitle("");
       setAuthor("");
@@ -55,6 +55,7 @@ export default function AddBook() {
       setPrice(0);
       setCategory("");
       setImage(null);
+      setPdf(null);
     } catch (error) {
       console.error("Erreur lors de l'ajout du livre :", error);
     } finally {
@@ -217,6 +218,38 @@ export default function AddBook() {
                   />
                 </div>
               </div>
+              <div className="col-span-full">
+                <label
+                  htmlFor="pdf-upload"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Fichier PDF du livre
+                </label>
+                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25">
+                  <div className="text-center">
+                    <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                      <label
+                        htmlFor="pdf-upload"
+                        className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                      >
+                        <span>Télécharger le PDF</span>
+                        <input
+                          id="pdf-upload"
+                          name="pdf-upload"
+                          type="file"
+                          accept="application/pdf"
+                          onChange={(e) => setPdf(e.target.files[0])}
+                          className="sr-only"
+                        />
+                      </label>
+                      <p className="pl-1">ou glisser déposer</p>
+                    </div>
+                    <p className="text-xs leading-5 text-gray-600">
+                      PDF jusqu'à 50 Mo
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -224,7 +257,7 @@ export default function AddBook() {
         <div className="mt-6 flex items-center justify-center gap-x-6">
           <button
             type="submit"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 button-custom"
           >
             Enregistrer
           </button>
