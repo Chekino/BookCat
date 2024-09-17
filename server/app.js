@@ -17,7 +17,7 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"], // Permet uniquement les ressources du même domaine
-      imgSrc: ["'self'", "http://localhost:5000"], // Autorise les images provenant de ton serveur backend
+      imgSrc: ["'self'", "https://bookcat.vercel.app"], // Autorise les images provenant de ton serveur backend
       // Ajoute d'autres règles pour les scripts, styles si nécessaire
     },
   })
