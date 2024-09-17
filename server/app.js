@@ -13,15 +13,7 @@ const app = express();
 
 // Middlewares pour la sécurité et le logging
 app.use(cors());
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"], // Permet uniquement les ressources du même domaine
-      imgSrc: ["'self'", "https://bookcat.vercel.app"], // Autorise les images provenant de ton serveur backend
-      // Ajoute d'autres règles pour les scripts, styles si nécessaire
-    },
-  })
-);
+app.use(helmet);
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
