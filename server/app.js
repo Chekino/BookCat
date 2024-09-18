@@ -17,8 +17,8 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"], // Permet uniquement les ressources du même domaine
-      imgSrc: ["'self'", "http://localhost:5000"], // Autorise les images provenant de ton serveur backend
-      // Ajoute d'autres règles pour les scripts, styles si nécessaire
+      imgSrc: ["'self'", "https://bookcat.onrender.com"], // Autorise les images provenant de votre domaine de production
+      connectSrc: ["'self'", "https://bookcat.onrender.com"], // Permet les connexions API depuis votre domaine
     },
   })
 );
