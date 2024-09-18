@@ -12,6 +12,7 @@ import "./header.css";
 import { Link } from "react-router-dom";
 import { useLogout } from "../hooks/useLogout";
 import useAuthContext from "../hooks/useAuthContext";
+import icone from "../assets/icone2.png";
 
 const navigation = [
   { name: "ACCUEIL", href: "/", current: true },
@@ -48,12 +49,8 @@ const Header = () => {
               </DisclosureButton>
             </div>
             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-              <div className="flex items-center">
-                <img
-                  alt="Your Company"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                  className="h-8 w-auto"
-                />
+              <div className="">
+                <img alt="Your Company" src={icone} className="h-15 w-20" />
               </div>
 
               <div className="hidden sm:flex justify-center flex-1">
