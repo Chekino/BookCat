@@ -2,12 +2,8 @@ import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
 } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import "./header.css";
 import { Link } from "react-router-dom";
 import { useLogout } from "../hooks/useLogout";
@@ -49,9 +45,9 @@ const Header = () => {
               </DisclosureButton>
             </div>
             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-              <div className="">
+              <a className="" href="/">
                 <img alt="Your Company" src={icone} className="h-15 w-20" />
-              </div>
+              </a>
 
               <div className="hidden sm:flex justify-center flex-1">
                 <div className="flex space-x-4">
