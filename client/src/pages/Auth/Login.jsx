@@ -1,15 +1,33 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useLogin } from "../../hooks/useLogin";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, error, isLoading } = useLogin();
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await login(email, password);
+    try {
+      const response = await login(email, password);
+
+      // Si la réponse est positive, on affiche le toast et on redirige
+      if (response) {
+        toast.success("Connexion réussie !");
+        navigate("/");
+      } else {
+        toast.error("Échec de la connexion.");
+      }
+    } catch (err) {
+      // En cas d'erreur, afficher un message
+      toast.error("Erreur lors de la connexion. Veuillez réessayer.");
+      console.error("Erreur lors de la connexion:", err);
+    }
   };
   return (
     <div className="hero min-h-screen">

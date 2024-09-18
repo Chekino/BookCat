@@ -9,17 +9,21 @@ export const useLogin = () => {
   const login = async (email, password) => {
     setIsLoading(true);
     setError(null);
-    const response = await fetch("http://localhost:5000/api/users/login/", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    const response = await fetch(
+      "https://bookcat.onrender.com/api/users/login/",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      }
+    );
 
     const json = await response.json();
 
     if (!response.ok) {
       setIsLoading(false);
-      setError(json);
+      setError(json.message || "Une erreur est survenue");
+      return null;
     }
     if (response.ok) {
       // save the user to local storage
@@ -28,6 +32,8 @@ export const useLogin = () => {
       // update the auth context
       dispatch({ type: "LOGIN", payload: json });
       setIsLoading(false);
+
+      return json;
     }
   };
 

@@ -26,7 +26,9 @@ export default function Bookview() {
   useEffect(() => {
     const fetchBookDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/books/${id}`);
+        const response = await fetch(
+          `https://bookcat.onrender.com/api/books/${id}`
+        );
         const data = await response.json();
         setBook(data);
       } catch (error) {
@@ -49,7 +51,7 @@ export default function Bookview() {
       setTimeout(async () => {
         try {
           const response = await fetch(
-            `http://localhost:5000/api/books/${id}/download`,
+            `https://bookcat.onrender.com/api/books/${id}/download`,
             {
               method: "GET",
               headers: {
@@ -97,7 +99,7 @@ export default function Bookview() {
             <li>
               <a
                 onClick={() => navigate("/")}
-                className="mr-2 text-sm font-medium text-gray-900"
+                className="mr-2 text-sm font-medium text-gray-900 cursor-pointer"
               >
                 Acceuil
               </a>
@@ -106,7 +108,7 @@ export default function Bookview() {
             <li>
               <a
                 onClick={() => navigate("/catalogue")}
-                className="mr-2 text-sm font-medium text-gray-900"
+                className="mr-2 text-sm font-medium text-gray-900 cursor-pointer"
               >
                 Catalogue
               </a>
@@ -115,7 +117,7 @@ export default function Bookview() {
             <li className="text-sm">
               <a
                 aria-current="page"
-                className="font-medium text-gray-500 hover:text-gray-600 "
+                className="font-medium text-gray-500 hover:text-gray-600 cursor-pointer"
               >
                 {truncateTitle(book.title, 20)}
               </a>
@@ -127,7 +129,7 @@ export default function Bookview() {
         <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
           <div className="">
             <img
-              src={`http://localhost:5000/uploads/images/${book.image}`}
+              src={`https://bookcat.onrender.com/uploads/images/${book.image}`}
               alt={book.title}
               className=" object-cover object-center "
             />

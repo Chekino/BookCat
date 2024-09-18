@@ -29,7 +29,7 @@ const Accueil = () => {
   // Fonction de debounce pour limiter le nombre d'appels réseau
   const searchBooks = (query) => {
     setLoading(true); // Activer le loader avant d'envoyer la requête
-    fetch(`http://localhost:5000/api/books/search?query=${query}`)
+    fetch(`https://bookcat.onrender.com/api/books/search?query=${query}`)
       .then((response) => response.json())
       .then((data) => {
         // Temporisation de 2 secondes avant de désactiver le loader et afficher les résultats
@@ -57,7 +57,9 @@ const Accueil = () => {
   useEffect(() => {
     const fetchRecentBooks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/books/recents");
+        const response = await fetch(
+          "https://bookcat.onrender.com/api/books/recents"
+        );
         const data = await response.json();
 
         setRecentBooks(data);
@@ -114,7 +116,7 @@ const Accueil = () => {
                       >
                         {/* Image du livre */}
                         <img
-                          src={`http://localhost:5000/uploads/images/${book.image}`}
+                          src={`https://bookcat.onrender.com/uploads/images/${book.image}`}
                           alt={book.title}
                           className="book-image w-16 h-16 object-cover mr-4"
                         />
@@ -181,7 +183,7 @@ const Accueil = () => {
                 className="cursor-pointer"
               >
                 <img
-                  src={`http://localhost:5000/uploads/images/${book.image}`}
+                  src={`https://bookcat.onrender.com/uploads/images/${book.image}`}
                   alt={book.title}
                   className="rounded-lg"
                 />

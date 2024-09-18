@@ -1,17 +1,30 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRegister } from "../../hooks/useRegister";
-
+import { toast } from "sonner";
 const Register = () => {
   const [fullname, SetFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { register, isLoading, error } = useRegister();
+  const navigate = useNavigate(); // Pour la redirection
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await register(fullname, email, password);
 
-    await register(fullname, email, password);
+      if (response) {
+        toast.success("Inscription réussie !");
+        navigate("/");
+      } else {
+        toast.error("Echec lors de l'inscription");
+      }
+    } catch (err) {
+      // En cas d'erreur, afficher un message
+      toast.error("Erreur lors de la connexion. Veuillez réessayer.");
+      console.error("Erreur lors de la connexion:", err);
+    }
   };
   return (
     <div className="hero min-h-screen">

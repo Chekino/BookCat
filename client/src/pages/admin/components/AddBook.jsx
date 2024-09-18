@@ -41,7 +41,7 @@ export default function AddBook() {
     }
     try {
       // Envoi des données au serveur
-      await axios.post("http://localhost:5000/api/books", formData, {
+      await axios.post("https://bookcat.onrender.com/api/books", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${user.token}`, // Utiliser le token de l'utilisateur connecté

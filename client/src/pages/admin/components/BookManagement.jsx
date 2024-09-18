@@ -10,7 +10,7 @@ const BookManagement = () => {
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/books");
+        const response = await fetch("https://bookcat.onrender.com/api/books");
         const data = await response.json();
 
         setAllBooks(data);
@@ -29,7 +29,7 @@ const BookManagement = () => {
   const handleDelete = async (bookId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/books/${bookId}`,
+        `https://bookcat.onrender.com/api/books/${bookId}`,
         {
           method: "DELETE",
           headers: {
@@ -87,7 +87,7 @@ const BookManagement = () => {
                   <div className="avatar">
                     <div className="mask mask-squircle h-12 w-12">
                       <img
-                        src={`http://localhost:5000/uploads/images/${book.image}`}
+                        src={`https://bookcat.onrender.com/uploads/images/${book.image}`}
                         alt={book.title}
                       />
                     </div>

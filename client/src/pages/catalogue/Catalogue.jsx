@@ -8,7 +8,7 @@ const Catalogue = () => {
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/books/");
+        const response = await fetch("https://bookcat.onrender.com/api/books/");
         const data = await response.json();
 
         setData(data);
@@ -44,7 +44,7 @@ const Catalogue = () => {
               >
                 <div className="relative group">
                   <img
-                    src={`http://localhost:5000/uploads/images/${book.image}`}
+                    src={`https://bookcat.onrender.com/uploads/images/${book.image}`}
                     alt={book.title}
                     className="w-40 h-auto mb-2 transition-transform duration-300 ease-in-out group-hover:scale-105"
                   />
